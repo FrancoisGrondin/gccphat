@@ -1,1 +1,1 @@
-# iDOA
+# GCC-PHAT

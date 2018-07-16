@@ -27,6 +27,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <gccphat/utils/scalar.h>
     
     typedef struct vector_obj {
 
@@ -42,9 +43,9 @@
     void vector_destroy(vector_obj * obj);   
 
 
-    int vector_get(vector_obj * obj, const unsigned int iElement, float * real, float * imag);
+    int vector_get(vector_obj * obj, const unsigned int iElement, scalar_struct * scalar);
 
-    int vector_set(vector_obj * obj, const unsigned int iElement, const float real, const float imag);
+    int vector_set(vector_obj * obj, const unsigned int iElement, const scalar_struct * scalar);
 
 
     int vector_zero(vector_obj * obj);
@@ -52,16 +53,20 @@
     int vector_copy(vector_obj * dest, const vector_obj * src);
 
 
-    int vector_dot(const vector_obj * src1, const vector_obj * src2, float * real, float * imag);
+    int vector_dot(scalar_struct * dest, const vector_obj * src1, const vector_obj * src2);
+    
+    int vector_inner(scalar_struct * dest, const vector_obj * src1, const vector_obj * src2);
 
-    int vector_norm(const vector_obj * obj, float * norm);
+    int vector_norm(float * dest, const vector_obj * src);
 
 
     int vector_add(vector_obj * dest, const vector_obj * src1, const vector_obj * src2);
 
     int vector_sub(vector_obj * dest, const vector_obj * src1, const vector_obj * src2);
 
-    int vector_scale(vector_obj * dest, const vector_obj * src, float real, float imag);
+    int vector_scale(vector_obj * dest, const vector_obj * src, const scalar_struct * scale);
+
+    int vector_normalize(vector_obj * dest, const vector_obj * src);
 
 
     void vector_printf(vector_obj * obj);

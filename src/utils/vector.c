@@ -28,23 +28,23 @@
 
     }
 
-    int vector_get(vector_obj * obj, const unsigned int iElement, float * real, float * imag) {
+    int vector_get(vector_obj * obj, const unsigned int iElement, scalar_struct * scalar) {
 
         if (iElement >= obj->nElements) { return -1; }
 
-        *real = obj->real[iElement];
-        *imag = obj->imag[iElement];
+        scalar->real = obj->real[iElement];
+        scalar->imag = obj->imag[iElement];
 
         return 0;
 
     }
 
-    int vector_set(vector_obj * obj, const unsigned int iElement, const float real, const float imag) {
+    int vector_set(vector_obj * obj, const unsigned int iElement, const scalar_struct * scalar) {
 
         if (iElement >= obj->nElements) { return -1; }
 
-        obj->real[iElement] = real;
-        obj->imag[iElement] = imag;
+        obj->real[iElement] = scalar->real;
+        obj->imag[iElement] = scalar->imag;
 
         return 0;       
 
@@ -74,7 +74,7 @@
 
     }
 
-    int vector_dot(const vector_obj * src1, const vector_obj * src2, float * real, float * imag) {
+    int vector_dot(scalar_struct * dest, const vector_obj * src1, const vector_obj * src2) {
 
         unsigned int iElement;
         unsigned int nElements;
@@ -83,13 +83,13 @@
 
         nElements = src1->nElements;
 
-        *real = 0.0f;
-        *imag = 0.0f;
+        dest->real = 0.0f;
+        dest->imag = 0.0f;
 
         for (iElement = 0; iElement < nElements; iElement++) {
 
-            *real += src1->real[iElement] * src2->real[iElement] - src1->imag[iElement] * src2->imag[iElement];
-            *imag += src1->real[iElement] * src2->imag[iElement] + src1->imag[iElement] * src2->real[iElement];
+            dest->real += src1->real[iElement] * src2->real[iElement] - (src1->imag[iElement]) * -1.0f * src2->imag[iElement];
+            dest->imag += src1->real[iElement] * -1.0f * src2->imag[iElement] + (src1->imag[iElement]) * src2->real[iElement];
 
         }
 
@@ -97,22 +97,22 @@
 
     }
 
-    int vector_norm(const vector_obj * obj, float * norm) {
+    int vector_norm(float * dest, const vector_obj * obj) {
 
         unsigned int iElement;
         unsigned int nElements;
 
         nElements = obj->nElements;
 
-        *norm = 0.0f;
+        *dest = 0.0f;
 
         for (iElement = 0; iElement < nElements; iElement++) {
 
-            *norm += obj->real[iElement] * obj->real[iElement] + obj->imag[iElement] * obj->imag[iElement];
+            *dest += obj->real[iElement] * obj->real[iElement] + obj->imag[iElement] * obj->imag[iElement];
 
         }
 
-        *norm = sqrtf(*norm);
+        *dest = sqrtf(*dest);
 
         return 0;
 
@@ -160,7 +160,7 @@
 
     }
 
-    int vector_scale(vector_obj * dest, const vector_obj * src, float real, float imag) {
+    int vector_scale(vector_obj * dest, const vector_obj * src, const scalar_struct * scale) {
 
         unsigned int iElement;
         unsigned int nElements;
@@ -171,8 +171,39 @@
 
         for (iElement = 0; iElement < nElements; iElement++) {
 
-            dest->real[iElement] = src->real[iElement] * real - src->imag[iElement] * imag;
-            dest->imag[iElement] = src->real[iElement] * imag + src->imag[iElement] * real;
+            dest->real[iElement] = src->real[iElement] * scale->real - src->imag[iElement] * scale->imag;
+            dest->imag[iElement] = src->real[iElement] * scale->imag + src->imag[iElement] * scale->real;
+
+        }
+
+        return 0;
+
+    }
+
+    int vector_normalize(vector_obj * dest, const vector_obj * src) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+        float norm;
+
+        if (dest->nElements != src->nElements) { return -1; }
+
+        nElements = dest->nElements;
+
+        norm = 0.0f;
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            norm += src->real[iElement] * src->real[iElement] + src->imag[iElement] * src->imag[iElement];
+
+        }
+
+        norm = sqrtf(norm);
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            dest->real[iElement] = src->real[iElement] / norm;
+            dest->imag[iElement] = src->imag[iElement] / norm;
 
         }
 

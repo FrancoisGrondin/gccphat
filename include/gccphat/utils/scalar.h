@@ -1,11 +1,11 @@
-#ifndef __GCCPHAT_UTILS_GRAMSCHMIDT
-#define __GCCPHAT_UTILS_GRAMSCHMIDT
+#ifndef __GCCPHAT_UTILS_SCALAR
+#define __GCCPHAT_UTILS_SCALAR
 
    /**
-    * \file         gramschmidt.h
+    * \file         scalar.h
     * \author       Francois Grondin (fgrondin@mit.edu)
     * \version      1.0
-    * \date         2018-07-14
+    * \date         2018-07-13
     * \copyright
     *
     * This program is free software: you can redistribute it and/or modify
@@ -23,31 +23,31 @@
     *
     */
 
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
-    #include <gccphat/utils/matrix.h>
-    #include <gccphat/utils/vector.h>
+    #include <math.h>
 
-    typedef struct gramschmidt_obj {
+    typedef struct scalar_struct {
 
-        unsigned int N;
-        unsigned int M;
-        vector_obj ** as;
-        vector_obj ** us;
-        vector_obj ** es;
-        vector_obj * u1;
-        vector_obj * u2;
+        float real;
+        float imag;
 
-    } gramschmidt_obj;
+    } scalar_struct;
 
+    scalar_struct scalar_add(scalar_struct a, scalar_struct b);
 
-    gramschmidt_obj * gramschmidt_construct(const unsigned int N, const unsigned int M);
+    scalar_struct scalar_sub(scalar_struct a, scalar_struct b);
 
-    void gramschmidt_destroy(gramschmidt_obj * obj);   
+    scalar_struct scalar_mul(scalar_struct a, scalar_struct b);
 
+    scalar_struct scalar_div(scalar_struct a, scalar_struct b);
 
-    int gramschmidt_process(gramschmidt_obj * obj, const matrix_obj * A, matrix_obj * E);
-    
+    scalar_struct scalar_inv(scalar_struct a);
+
+    scalar_struct scalar_conj(scalar_struct a);
+
+    float scalar_getAmplitude(scalar_struct a);
+
+    float scalar_getPhase(scalar_struct a);
+
+    scalar_struct scalar_setPhasor(const float amplitude, const float phase);
 
 #endif

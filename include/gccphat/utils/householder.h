@@ -1,8 +1,8 @@
-#ifndef __GCCPHAT_UTILS_GRAMSCHMIDT
-#define __GCCPHAT_UTILS_GRAMSCHMIDT
+#ifndef __GCCPHAT_UTILS_HOUSEHOLDER
+#define __GCCPHAT_UTILS_HOUSEHOLDER
 
    /**
-    * \file         gramschmidt.h
+    * \file         householder.h
     * \author       Francois Grondin (fgrondin@mit.edu)
     * \version      1.0
     * \date         2018-07-14
@@ -27,27 +27,35 @@
     #include <stdlib.h>
     #include <string.h>
     #include <gccphat/utils/matrix.h>
+    #include <gccphat/utils/scalar.h>
     #include <gccphat/utils/vector.h>
 
-    typedef struct gramschmidt_obj {
+    typedef struct householder_obj {
 
-        unsigned int N;
         unsigned int M;
-        vector_obj ** as;
-        vector_obj ** us;
-        vector_obj ** es;
-        vector_obj * u1;
-        vector_obj * u2;
+        unsigned int N;
 
-    } gramschmidt_obj;
+        vector_obj * e1;
+        vector_obj * alpha_e1;
+        vector_obj * x;
+        vector_obj * u;
+        vector_obj * v;
+
+        matrix_obj * V;
+        matrix_obj * VH;
+        matrix_obj * VVH;
+        matrix_obj * twoVVH;
+        matrix_obj * I;
+
+    } householder_obj;
 
 
-    gramschmidt_obj * gramschmidt_construct(const unsigned int N, const unsigned int M);
+    householder_obj * householder_construct(const unsigned int M, const unsigned int N);
 
-    void gramschmidt_destroy(gramschmidt_obj * obj);   
+    void householder_destroy(householder_obj * obj);   
 
 
-    int gramschmidt_process(gramschmidt_obj * obj, const matrix_obj * A, matrix_obj * E);
+    int householder_process(householder_obj * obj, const matrix_obj * A, matrix_obj * Q);
     
 
 #endif

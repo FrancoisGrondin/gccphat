@@ -4,36 +4,42 @@
 	int main(int argc, char * argv[]) {
 
 		matrix_obj * A;
-		matrix_obj * B;
-		matrix_obj * C;
-		unsigned int index;
+		matrix_obj * Q;
+		matrix_obj * QA;
+		scalar_struct a;
+		householder_obj * ho;
 
-		A = matrix_construct(4,3);
-		B = matrix_construct(3,4);
-		C = matrix_construct(4,4);
+		A = matrix_construct(3,3);
+		Q = matrix_construct(3,3);
+		QA = matrix_construct(3,3);
 
-		for (index = 0; index < 12; index++) {
-
-			A->real[index] = (float) index;
-			A->imag[index] = (float) (index+100);
-
-			B->real[index] = (float) (index*2);
-			B->imag[index] = (float) (index+50);
-
-		}
+		a.real = 12; a.imag = 0; matrix_setElement(A, 0, 0, &a);
+		a.real = -51; a.imag = 0; matrix_setElement(A, 0, 1, &a);
+		a.real = 4; a.imag = 0; matrix_setElement(A, 0, 2, &a);
+		a.real = 6; a.imag = 0; matrix_setElement(A, 1, 0, &a);
+		a.real = 167; a.imag = 0; matrix_setElement(A, 1, 1, &a);
+		a.real = -68; a.imag = 0; matrix_setElement(A, 1, 2, &a);
+		a.real = -4; a.imag = 0; matrix_setElement(A, 2, 0, &a);
+		a.real = 24; a.imag = 0; matrix_setElement(A, 2, 1, &a);
+		a.real = -41; a.imag = 0; matrix_setElement(A, 2, 2, &a);
 
 		matrix_printf(A);
-		printf("\n");
-		matrix_printf(B);
-		printf("\n");
 
-		matrix_mul(C, A, B);
+		ho = householder_construct(3,3);
 
-		matrix_printf(C);
+		householder_process(ho, A, Q);
+
 		printf("\n");
+		matrix_printf(Q);
+
+		matrix_mul(QA, Q, A);
+		
+		printf("\n");
+		matrix_printf(QA);
+
+		householder_destroy(ho);
 
 		matrix_destroy(A);
-		matrix_destroy(B);
 
 		return 0;
 

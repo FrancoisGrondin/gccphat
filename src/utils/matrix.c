@@ -29,25 +29,25 @@
 
     }
 
-    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag) {
+    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, scalar_struct * scalar) {
 
         if (iRow >= obj->nRows) { return -1; }
         if (iCol >= obj->nCols) { return -1; }
 
-        *real = obj->real[iRow * obj->nCols + iCol];
-        *imag = obj->imag[iRow * obj->nCols + iCol];
+        scalar->real = obj->real[iRow * obj->nCols + iCol];
+        scalar->imag = obj->imag[iRow * obj->nCols + iCol];
 
         return 0;
 
     }
 
-    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag) {
+    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const scalar_struct * scalar) {
 
         if (iRow >= obj->nRows) { return -1; }
         if (iCol >= obj->nCols) { return -1; }
 
-        obj->real[iRow * obj->nCols + iCol] = real;
-        obj->imag[iRow * obj->nCols + iCol] = imag;
+        obj->real[iRow * obj->nCols + iCol] = scalar->real;
+        obj->imag[iRow * obj->nCols + iCol] = scalar->imag;
 
         return 0;
 
@@ -140,6 +140,24 @@
 
         memset(obj->real, 0x00, sizeof(float) * obj->nRows * obj->nCols);
         memset(obj->imag, 0x00, sizeof(float) * obj->nRows * obj->nCols);
+
+        return 0;
+
+    }
+
+    int matrix_identity(matrix_obj * obj) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+        
+        if (obj->nRows >= obj->nCols) { nElements = obj->nCols; }
+        else { nElements = obj->nRows; }
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            obj->real[iElement * obj->nCols + iElement] = 1.0f;
+
+        }
 
         return 0;
 
@@ -281,6 +299,37 @@
 
                 dest->real[iCol * dest->nRows + iRow] = destR;
                 dest->imag[iCol * dest->nRows + iRow] = destI;
+
+            }
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_scale(matrix_obj * dest, const matrix_obj * src, const scalar_struct * scalar) {
+
+        unsigned int iRow, iCol;
+
+        float destR, destI;
+        float srcR, srcI;
+
+        if (dest->nRows != src->nRows) { return -1; }
+        if (dest->nCols != src->nCols) { return -1; }
+
+        for (iRow = 0; iRow < dest->nRows; iRow++) {
+
+            for (iCol = 0; iCol < dest->nCols; iCol++) {
+
+                srcR = src->real[iRow * src->nCols + iCol];
+                srcI = src->imag[iRow * src->nCols + iCol];
+
+                destR = srcR * scalar->real - srcI * scalar->imag;
+                destI = srcI * scalar->real + srcR * scalar->imag;
+
+                dest->real[iRow * src->nCols + iCol] = destR;
+                dest->imag[iRow * src->nCols + iCol] = destI;
 
             }
 

@@ -1,24 +1,25 @@
     
     #include <gccphat/utils/gramschmidt.h>
 
-    gramschmidt_obj * gramschmidt_construct(const unsigned int N) {
+    gramschmidt_obj * gramschmidt_construct(const unsigned int N, const unsigned int M) {
 
         gramschmidt_obj * obj;
-        unsigned int n;
+        unsigned int m;
 
         obj = (gramschmidt_obj *) malloc(sizeof(gramschmidt_obj));
 
         obj->N = N;
+        obj->M = M;
 
-        obj->as = (vector_obj **) malloc(sizeof(vector_obj *) * N);
-        obj->us = (vector_obj **) malloc(sizeof(vector_obj *) * N);
-        obj->es = (vector_obj **) malloc(sizeof(vector_obj *) * N);
+        obj->as = (vector_obj **) malloc(sizeof(vector_obj *) * M);
+        obj->us = (vector_obj **) malloc(sizeof(vector_obj *) * M);
+        obj->es = (vector_obj **) malloc(sizeof(vector_obj *) * M);
 
-        for (n = 0; n < N; n++) {
+        for (m = 0; m < M; m++) {
 
-            obj->as[n] = vector_construct(N);
-            obj->us[n] = vector_construct(N);
-            obj->es[n] = vector_construct(N);
+            obj->as[m] = vector_construct(N);
+            obj->us[m] = vector_construct(N);
+            obj->es[m] = vector_construct(N);
 
         }
 
@@ -31,13 +32,13 @@
 
     void gramschmidt_destroy(gramschmidt_obj * obj) {
 
-        unsigned int n;
+        unsigned int m;
 
-        for (n = 0; n < obj->N; n++) {
+        for (m = 0; m < obj->M; m++) {
 
-            vector_destroy(obj->as[n]);
-            vector_destroy(obj->us[n]);
-            vector_destroy(obj->es[n]);
+            vector_destroy(obj->as[m]);
+            vector_destroy(obj->us[m]);
+            vector_destroy(obj->es[m]);
 
         }
 
@@ -50,42 +51,60 @@
 
     int gramschmidt_process(gramschmidt_obj * obj, const matrix_obj * A, matrix_obj * E) {
 
-        unsigned int n;
+        unsigned int m;
         unsigned int k;
-        float dot_a_u_real;
-        float dot_a_u_imag;
-        float norm_u;
+        scalar_struct dot_a_u;
+        scalar_struct dot_a_u_conj;
+        scalar_struct dot_u_u;
+        scalar_struct dot_a_u_conj_D_dot_u_u;
+        scalar_struct norm_u;
+        scalar_struct norm_u_inv;
 
         if (A->nRows != obj->N) { return -1; }
-        if (A->nCols != obj->N) { return -1; }
+        if (A->nCols != obj->M) { return -1; }
         if (E->nRows != obj->N) { return -1; }
-        if (E->nCols != obj->N) { return -1; }        
+        if (E->nCols != obj->M) { return -1; }        
 
         matrix_zero(E);
 
-        for (n = 0; n < obj->N; n++) {
+        for (m = 0; m < obj->M; m++) {
 
-            matrix_getCol(A, n, obj->as[n]);
+            matrix_getCol(A, m, obj->as[m]);
+
+            printf("a%u = ",(m+1));
+            vector_printf(obj->as[m]);
+            printf("\n");
 
         }
 
-        for (n = 0; n < obj->N; n++) {
+        for (m = 0; m < obj->M; m++) {
 
-            vector_copy(obj->us[n], obj->as[n]);
+            vector_copy(obj->us[m], obj->as[m]);
 
-            for (k = 0; k < obj->N; k++) {
+            for (k = 0; k < m; k++) {
 
-                vector_dot(obj->as[n], obj->us[k], &dot_a_u_real, &dot_a_u_imag);
-                vector_norm(obj->us[k], &norm_u);
+                vector_dot(&dot_a_u, obj->us[k], obj->as[m]);
+                dot_a_u_conj = scalar_conj(dot_a_u);
+                vector_dot(&dot_u_u, obj->us[k], obj->us[k]);
+                dot_a_u_conj_D_dot_u_u = scalar_div(dot_a_u_conj, dot_u_u);             
+                vector_scale(obj->u1, obj->us[k], &dot_a_u_conj_D_dot_u_u);
 
-                vector_scale(obj->u1, obj->us[k], dot_a_u_real / norm_u, dot_a_u_imag / norm_u);
-                vector_sub(obj->u2, obj->us[n], obj->u1);
-                vector_copy(obj->us[n], obj->u2);
+                vector_sub(obj->u2, obj->us[m], obj->u1);
+                vector_copy(obj->us[m], obj->u2);
 
             }
 
-            vector_norm(obj->us[n], &norm_u);
-            vector_scale(obj->es[n], obj->us[n], 1.0/norm_u, 0.0f);
+            vector_norm(&norm_u, obj->us[m]);
+            norm_u_inv = scalar_inv(norm_u);
+
+            vector_scale(obj->es[m], obj->us[m], &norm_u_inv);
+
+        }
+
+        
+        for (m = 0; m < obj->M; m++) {
+
+            matrix_setCol(E, m, obj->es[m]);
 
         }
 

@@ -43,9 +43,9 @@
     void matrix_destroy(matrix_obj * obj);   
 
 
-    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag);
+    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, scalar_struct * scalar);
 
-    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag);
+    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const scalar_struct * scalar);
 
     int matrix_getRow(const matrix_obj * obj, const unsigned int iRow, vector_obj * vtr);
 
@@ -58,6 +58,8 @@
 
     int matrix_zero(matrix_obj * obj);
 
+    int matrix_identity(matrix_obj * obj);
+
 
     int matrix_add(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
 
@@ -66,6 +68,9 @@
     int matrix_mul(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
 
     int matrix_conj(matrix_obj * dest, const matrix_obj * src);
+
+
+    int matrix_scale(matrix_obj * dest, const matrix_obj * src, const scalar_struct * scalar);
 
 
     void matrix_printf(matrix_obj * obj);

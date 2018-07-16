@@ -136,6 +136,64 @@
 
     }
 
+    int matrix_getSubMatrix(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, matrix_obj * sub) {
+
+        unsigned int iRowMain;
+        unsigned int iColMain;
+        unsigned int iRowSub;
+        unsigned int iColSub;
+
+        if ((iRow + sub->nRows) > obj->nRows) { return -1; }
+        if ((iCol + sub->nCols) > obj->nCols) { return -1; }
+
+        for (iRowSub = 0; iRowSub < sub->nRows; iRowSub++) {
+
+            iRowMain = iRow + iRowSub;
+
+            for (iColSub = 0; iColSub < sub->nCols; iColSub++) {
+
+                iColMain = iCol + iColSub;
+
+                sub->real[iRowSub * sub->nCols + iColSub] = obj->real[iRowMain * obj->nCols + iColMain];
+                sub->imag[iRowSub * sub->nCols + iColSub] = obj->imag[iRowMain * obj->nCols + iColMain];
+
+            }
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_setSubMatrix(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const matrix_obj * sub) {
+
+        unsigned int iRowMain;
+        unsigned int iColMain;
+        unsigned int iRowSub;
+        unsigned int iColSub;
+
+        if ((iRow + sub->nRows) > obj->nRows) { return -1; }
+        if ((iCol + sub->nCols) > obj->nCols) { return -1; }
+
+        for (iRowSub = 0; iRowSub < sub->nRows; iRowSub++) {
+
+            iRowMain = iRow + iRowSub;
+
+            for (iColSub = 0; iColSub < sub->nCols; iColSub++) {
+
+                iColMain = iCol + iColSub;
+
+                obj->real[iRowMain * obj->nCols + iColMain] = sub->real[iRowSub * sub->nCols + iColSub];
+                obj->imag[iRowMain * obj->nCols + iColMain] = sub->imag[iRowSub * sub->nCols + iColSub];
+                
+            }
+
+        }
+
+        return 0;
+
+    }
+
     int matrix_zero(matrix_obj * obj) {
 
         memset(obj->real, 0x00, sizeof(float) * obj->nRows * obj->nCols);

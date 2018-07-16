@@ -55,6 +55,10 @@
 
     int matrix_setCol(matrix_obj * obj, const unsigned int iCol, const vector_obj * vtr);
 
+    int matrix_getSubMatrix(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, matrix_obj * sub);
+
+    int matrix_setSubMatrix(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const matrix_obj * sub);
+
 
     int matrix_zero(matrix_obj * obj);
 

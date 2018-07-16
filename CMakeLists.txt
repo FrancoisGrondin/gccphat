@@ -23,8 +23,10 @@ set(SRC
 
     src/utils/eig.c
     src/utils/fft.c
+    src/utils/gramschmidt.c
     src/utils/matrix.c
     src/utils/svd.c
+    src/utils/vector.c
 
 )
 

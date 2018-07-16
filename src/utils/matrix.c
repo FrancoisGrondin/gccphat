@@ -29,7 +29,7 @@
 
     }
 
-    int matrix_get(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag) {
+    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag) {
 
         if (iRow >= obj->nRows) { return -1; }
         if (iCol >= obj->nCols) { return -1; }
@@ -41,13 +41,105 @@
 
     }
 
-    int matrix_set(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag) {
+    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag) {
 
         if (iRow >= obj->nRows) { return -1; }
         if (iCol >= obj->nCols) { return -1; }
 
         obj->real[iRow * obj->nCols + iCol] = real;
         obj->imag[iRow * obj->nCols + iCol] = imag;
+
+        return 0;
+
+    }
+
+    int matrix_getRow(const matrix_obj * obj, const unsigned int iRow, vector_obj * vtr) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+
+        if (iRow >= obj->nRows) { return -1; }
+        if (vtr->nElements != obj->nCols) { return -1; }
+
+        nElements = vtr->nElements;
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            vtr->real[iElement] = obj->real[iRow * obj->nCols + iElement];
+            vtr->imag[iElement] = obj->imag[iRow * obj->nCols + iElement];
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_setRow(matrix_obj * obj, const unsigned int iRow, const vector_obj * vtr) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+
+        if (iRow >= obj->nRows) { return -1; }
+        if (vtr->nElements != obj->nCols) { return -1; }
+
+        nElements = vtr->nElements;
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            obj->real[iRow * obj->nCols + iElement] = vtr->real[iElement];
+            obj->imag[iRow * obj->nCols + iElement] = vtr->imag[iElement];
+
+        }
+
+        return 0;
+    }
+
+    int matrix_getCol(const matrix_obj * obj, const unsigned int iCol, vector_obj * vtr) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+
+        if (iCol >= obj->nCols) { return -1; }
+        if (vtr->nElements != obj->nRows) { return -1; }
+
+        nElements = vtr->nElements;
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            vtr->real[iElement] = obj->real[iElement * obj->nCols + iCol];
+            vtr->imag[iElement] = obj->imag[iElement * obj->nCols + iCol];
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_setCol(matrix_obj * obj, const unsigned int iCol, const vector_obj * vtr) {
+
+        unsigned int iElement;
+        unsigned int nElements;
+
+        if (iCol >= obj->nCols) { return -1; }
+        if (vtr->nElements != obj->nRows) { return -1; }
+
+        nElements = vtr->nElements;
+
+        for (iElement = 0; iElement < nElements; iElement++) {
+
+            obj->real[iElement * obj->nCols + iCol] = vtr->real[iElement];
+            obj->imag[iElement * obj->nCols + iCol] = vtr->imag[iElement];
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_zero(matrix_obj * obj) {
+
+        memset(obj->real, 0x00, sizeof(float) * obj->nRows * obj->nCols);
+        memset(obj->imag, 0x00, sizeof(float) * obj->nRows * obj->nCols);
 
         return 0;
 

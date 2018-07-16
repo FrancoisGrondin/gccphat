@@ -26,6 +26,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <gccphat/utils/vector.h>
     
     typedef struct matrix_obj {
 
@@ -36,14 +37,26 @@
 
     } matrix_obj;
 
+
     matrix_obj * matrix_construct(const unsigned int nRows, const unsigned int nCols);
 
     void matrix_destroy(matrix_obj * obj);   
 
 
-    int matrix_get(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag);
+    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, float * real, float * imag);
 
-    int matrix_set(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag);
+    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const float real, const float imag);
+
+    int matrix_getRow(const matrix_obj * obj, const unsigned int iRow, vector_obj * vtr);
+
+    int matrix_setRow(matrix_obj * obj, const unsigned int iRow, const vector_obj * vtr);
+
+    int matrix_getCol(const matrix_obj * obj, const unsigned int iCol, vector_obj * vtr);
+
+    int matrix_setCol(matrix_obj * obj, const unsigned int iCol, const vector_obj * vtr);
+
+
+    int matrix_zero(matrix_obj * obj);
 
 
     int matrix_add(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);

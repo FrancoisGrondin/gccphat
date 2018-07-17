@@ -349,7 +349,8 @@
 
     int matrix_conj(matrix_obj * dest, const matrix_obj * src) {
 
-        unsigned int iRow, iCol;
+        unsigned int iRowSrc, iColSrc;
+        unsigned int iRowDest, iColDest;
 
         float destR, destI;
         float srcR, srcI;
@@ -357,18 +358,21 @@
         if (dest->nRows != src->nCols) { return -1; }
         if (dest->nCols != src->nRows) { return -1; }
 
-        for (iRow = 0; iRow < dest->nRows; iRow++) {
+        for (iRowSrc = 0; iRowSrc < src->nRows; iRowSrc++) {
 
-            for (iCol = 0; iCol < dest->nCols; iCol++) {
+            for (iColSrc = 0; iColSrc < src->nCols; iColSrc++) {
 
-                srcR = src->real[iRow * src->nCols + iCol];
-                srcI = src->imag[iRow * src->nCols + iCol];
+                iColDest = iRowSrc;
+                iRowDest = iColSrc;
+
+                srcR = src->real[iRowSrc * src->nCols + iColSrc];
+                srcI = src->imag[iRowSrc * src->nCols + iColSrc];
 
                 destR = srcR;
                 destI = -1.0f * srcI;
 
-                dest->real[iCol * dest->nRows + iRow] = destR;
-                dest->imag[iCol * dest->nRows + iRow] = destI;
+                dest->real[iRowDest * dest->nCols + iColDest] = destR;
+                dest->imag[iRowDest * dest->nCols + iColDest] = destI;
 
             }
 

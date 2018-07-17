@@ -21,14 +21,14 @@
         obj->Aps = (matrix_obj **) malloc(sizeof(matrix_obj *) * T);
         obj->householders = (householder_obj **) malloc(sizeof(householder_obj *) * T);
 
-        obj->QT = matrix_construct(T, T);
-        obj->Qp = matrix_construct(T, T);
-        obj->Rp = matrix_construct(T, T);
+        obj->QT = matrix_construct(M, M);
+        obj->Qp = matrix_construct(M, M);
+        obj->Rp = matrix_construct(M, N);
 
         for (t = 0; t < T; t++) {
 
-            obj->Qs[t] = matrix_construct(T-t,T-t);
-            obj->Qps[t] = matrix_construct(T, T);
+            obj->Qs[t] = matrix_construct(M-t,M-t);
+            obj->Qps[t] = matrix_construct(M, M);
             obj->As[t] = matrix_construct(M-t,N-t);
             obj->Aps[t] = matrix_construct(M-t,N-t);
             obj->householders[t] = householder_construct(M-t,N-t);

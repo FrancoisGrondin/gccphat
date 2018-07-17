@@ -3,6 +3,7 @@
 extern "C" {
 #endif
 
+	#include <utils/eig.h>
 	#include <utils/householder.h>
     #include <utils/matrix.h>
     #include <utils/qr.h>

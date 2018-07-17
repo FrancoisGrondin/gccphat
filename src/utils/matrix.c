@@ -413,6 +413,115 @@
 
     }
 
+    int matrix_norm(const matrix_obj * obj, const unsigned int p, float * norm) {
+
+        unsigned int iRow, iCol;
+        float real, imag;
+        float total;
+
+        if (p == 0) { return -1; }
+
+        for (iRow = 0; iRow < obj->nRows; iRow++) {
+
+            for (iCol = 0; iCol < obj->nCols; iCol++) {
+
+                real = obj->real[iRow * obj->nCols + iCol];
+                imag = obj->imag[iRow * obj->nCols + iCol];
+
+                total = powf(sqrtf(real * real + imag * imag), (float) p);
+
+            }
+
+        }
+
+        total = powf(total, 1.0/((float) p));
+
+        return 0;
+
+    }
+
+    int matrix_symm(const matrix_obj * obj, char * symm) {
+
+        unsigned int iRow, iCol;
+        unsigned int iRow1, iCol1;
+        unsigned int iRow2, iCol2;
+        float real1, imag1;
+        float real2, imag2;
+        float realD, imagD;
+        float total;
+        const float epsilon = 1E-20;
+
+        total = 0.0f;
+
+        for (iRow = 0; iRow < obj->nRows; iRow++) {
+
+            for (iCol = (iRow+1); iCol < obj->nCols; iCol++) {
+
+                iRow1 = iRow;
+                iCol1 = iCol;
+                iRow2 = iCol;
+                iCol2 = iRow;
+
+                real1 = obj->real[iRow1 * obj->nCols + iCol1];
+                imag1 = obj->imag[iRow1 * obj->nCols + iCol1];
+                real2 = obj->real[iRow2 * obj->nCols + iCol2];
+                imag2 = obj->imag[iRow2 * obj->nCols + iCol2];
+
+                realD = real1-real2;
+                imagD = imag1+imag2;
+
+                total += realD*realD + imagD*imagD;
+
+            }
+
+        }
+
+        total /= ((float) (obj->nRows * obj->nCols));
+
+        if (total < epsilon) {
+            *symm = 1;
+        }
+        else {
+            *symm = 0;
+        }
+
+        return 0;
+
+    }
+
+    int matrix_tril(const matrix_obj * obj, char * tril) {
+
+        unsigned int iRow, iCol;
+        float real, imag;
+        float total;
+        const float epsilon = 1E-20;
+
+        for (iRow = 1; iRow < obj->nRows; iRow++) {
+
+            for (iCol = 0; iCol < iRow; iCol++) {
+
+                real = obj->real[iRow * obj->nCols + iCol];
+                imag = obj->imag[iRow * obj->nCols + iCol];
+
+                total += real*real + imag*imag;
+
+            }
+
+        }
+
+        total /= ((float) (obj->nRows * obj->nCols));
+
+        if (total < epsilon) {
+            *tril = 1;
+        }
+        else {
+            *tril = 0;
+        }
+
+        return 0;
+
+    }
+
     void matrix_printf(matrix_obj * obj) {
 
         unsigned int iRow, iCol;

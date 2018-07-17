@@ -23,6 +23,7 @@
     *
     */
 
+    #include <math.h>
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -79,6 +80,12 @@
 
     int matrix_scale(matrix_obj * dest, const matrix_obj * src, const scalar_struct * scalar);
 
+
+    int matrix_norm(const matrix_obj * obj, const unsigned int p, float * norm);
+
+    int matrix_symm(const matrix_obj * obj, char * symm);
+
+    int matrix_tril(const matrix_obj * obj, char * tril);
 
     void matrix_printf(matrix_obj * obj);
 

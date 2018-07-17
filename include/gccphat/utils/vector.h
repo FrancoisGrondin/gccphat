@@ -43,14 +43,15 @@
     void vector_destroy(vector_obj * obj);   
 
 
+    int vector_copy(vector_obj * dest, const vector_obj * src);
+
+
     int vector_get(vector_obj * obj, const unsigned int iElement, scalar_struct * scalar);
 
     int vector_set(vector_obj * obj, const unsigned int iElement, const scalar_struct * scalar);
 
 
     int vector_zero(vector_obj * obj);
-
-    int vector_copy(vector_obj * dest, const vector_obj * src);
 
 
     int vector_dot(scalar_struct * dest, const vector_obj * src1, const vector_obj * src2);

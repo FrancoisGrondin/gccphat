@@ -5,13 +5,15 @@
 
 		matrix_obj * A;
 		matrix_obj * Q;
-		matrix_obj * QA;
+		matrix_obj * R;
 		scalar_struct a;
-		householder_obj * ho;
+		qr_obj * qr;
 
 		A = matrix_construct(3,3);
 		Q = matrix_construct(3,3);
-		QA = matrix_construct(3,3);
+		R = matrix_construct(3,3);
+
+		qr = qr_construct(3,3);
 
 		a.real = 12; a.imag = 0; matrix_setElement(A, 0, 0, &a);
 		a.real = -51; a.imag = 0; matrix_setElement(A, 0, 1, &a);
@@ -25,21 +27,18 @@
 
 		matrix_printf(A);
 
-		ho = householder_construct(3,3);
-
-		householder_process(ho, A, Q);
+		qr_process(qr, A, Q, R);
 
 		printf("\n");
 		matrix_printf(Q);
-
-		matrix_mul(QA, Q, A);
-		
 		printf("\n");
-		matrix_printf(QA);
-
-		householder_destroy(ho);
+		matrix_printf(R);
 
 		matrix_destroy(A);
+		matrix_destroy(Q);
+		matrix_destroy(R);
+
+		qr_destroy(qr);
 
 		return 0;
 

@@ -28,6 +28,21 @@
 
     }
 
+    int vector_copy(vector_obj * dest, const vector_obj * src) {
+
+        unsigned int nElements;
+
+        if (dest->nElements != src->nElements) { return -1; }
+
+        nElements = dest->nElements;
+
+        memcpy(dest->real, src->real, sizeof(float) * nElements);
+        memcpy(dest->imag, src->imag, sizeof(float) * nElements);
+
+        return 0;
+
+    }    
+
     int vector_get(vector_obj * obj, const unsigned int iElement, scalar_struct * scalar) {
 
         if (iElement >= obj->nElements) { return -1; }
@@ -54,21 +69,6 @@
 
         memset(obj->real, 0x00, sizeof(float) * obj->nElements);
         memset(obj->imag, 0x00, sizeof(float) * obj->nElements);
-
-        return 0;
-
-    }
-
-    int vector_copy(vector_obj * dest, const vector_obj * src) {
-
-        unsigned int nElements;
-
-        if (dest->nElements != src->nElements) { return -1; }
-
-        nElements = dest->nElements;
-
-        memcpy(dest->real, src->real, sizeof(float) * nElements);
-        memcpy(dest->imag, src->imag, sizeof(float) * nElements);
 
         return 0;
 

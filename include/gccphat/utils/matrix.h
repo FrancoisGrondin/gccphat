@@ -43,6 +43,9 @@
     void matrix_destroy(matrix_obj * obj);   
 
 
+    int matrix_copy(matrix_obj * dest, const matrix_obj * src);
+
+
     int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, scalar_struct * scalar);
 
     int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const scalar_struct * scalar);

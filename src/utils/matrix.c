@@ -29,6 +29,18 @@
 
     }
 
+    int matrix_copy(matrix_obj * dest, const matrix_obj * src) {
+
+        if (dest->nRows != src->nRows) { return -1; }
+        if (dest->nCols != src->nCols) { return -1; }
+
+        memcpy(dest->real, src->real, sizeof(float) * dest->nRows * dest->nCols);
+        memcpy(dest->imag, src->imag, sizeof(float) * dest->nRows * dest->nCols);
+
+        return 0;
+
+    }
+
     int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, scalar_struct * scalar) {
 
         if (iRow >= obj->nRows) { return -1; }

@@ -199,6 +199,7 @@
         }
 
         norm = sqrtf(norm);
+        norm += 1E-20;
 
         for (iElement = 0; iElement < nElements; iElement++) {
 

@@ -54,12 +54,18 @@
         float Xnorm;
         scalar_struct alpha;
         scalar_struct two;
+        scalar_struct q;
+
+        if (A->nRows != obj->M) { return -1; }
+        if (A->nCols != obj->N) { return -1; }
+        if (Q->nRows != obj->M) { return -1; }
+        if (Q->nCols != obj->M) { return -1; }
 
         matrix_getCol(A, 0, obj->x);
         vector_norm(&Xnorm, obj->x);
 
         vector_get(obj->x, 0, &x1);
-        alpha = scalar_setPhasor(Xnorm, scalar_getPhase(x1) + M_PI);
+        alpha = scalar_setPhasor(Xnorm, scalar_getPhase(x1));
 
         vector_scale(obj->alpha_e1, obj->e1, &alpha);
 

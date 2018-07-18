@@ -63,6 +63,10 @@
 
     int matrix_setSubMatrix(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const matrix_obj * sub);
 
+    int matrix_getDiag(const matrix_obj * obj, vector_obj * vtr);
+
+    int matrix_setDiag(matrix_obj * obj, const vector_obj * vtr);
+
 
     int matrix_zero(matrix_obj * obj);
 
@@ -75,10 +79,16 @@
 
     int matrix_mul(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
 
+    int matrix_had(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
+
     int matrix_conj(matrix_obj * dest, const matrix_obj * src);
 
 
     int matrix_scale(matrix_obj * dest, const matrix_obj * src, const scalar_struct * scalar);
+
+    int matrix_real(matrix_obj * dest, const matrix_obj * src);
+
+    int matrix_imag(matrix_obj * dest, const matrix_obj * src);
 
 
     int matrix_norm(const matrix_obj * obj, const unsigned int p, float * norm);
@@ -87,6 +97,7 @@
 
     int matrix_tril(const matrix_obj * obj, char * tril);
 
-    void matrix_printf(matrix_obj * obj);
+
+    void matrix_printf(const matrix_obj * obj);
 
 #endif

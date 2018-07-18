@@ -15,6 +15,10 @@
         obj->QT = matrix_construct(M, M);
         obj->A = matrix_construct(M, M);
         obj->QTA = matrix_construct(M, M);
+        obj->QTV = matrix_construct(M, M);
+
+        obj->I = matrix_construct(M, M);
+        obj->D = matrix_construct(M, M);
 
         obj->qr = qr_construct(M, M);
 
@@ -30,6 +34,10 @@
     	matrix_destroy(obj->QT);
     	matrix_destroy(obj->A);
     	matrix_destroy(obj->QTA);
+        matrix_destroy(obj->QTV);
+
+        matrix_destroy(obj->I);
+        matrix_destroy(obj->D);
 
     	qr_destroy(obj->qr);
 
@@ -43,6 +51,7 @@
     	char tril;
 
     	unsigned int k = 0;
+        const unsigned int K = 1000;
 
     	matrix_symm(A, &symm); if (symm == 0) { return -1; }
     	if (A->nRows != obj->M) { return -1; }
@@ -52,29 +61,32 @@
     	if (D->nRows != obj->M) { return -1; }
     	if (D->nCols != obj->M) { return -1; }
 
+        matrix_identity(obj->I);
     	matrix_copy(obj->A, A);
+        matrix_identity(V);
 
-    	for (k = 0; k < 2; k++) {
+    	for (k = 0; k < K; k++) {
 
-    		//matrix_tril(obj->A, &tril);
+    		matrix_tril(obj->A, &tril);
 
-    		//if (tril == 1) { break; }
+    		if (tril == 1) { break; }
 
     		qr_process(obj->qr, obj->A, obj->Q, obj->R);
-    		
-    		printf("A_%u = \n", k);
-    		matrix_printf(obj->A);
-    		printf("Q_%u = \n", k);
-    		matrix_printf(obj->Q);
-    		printf("R_%u = \n", k);
-    		matrix_printf(obj->R);
-    		printf("\n");
-    		
+    		    		
     		matrix_conj(obj->QT, obj->Q);
     		matrix_mul(obj->QTA, obj->QT, obj->A);
     		matrix_mul(obj->A, obj->QTA, obj->Q);
+
+            matrix_mul(obj->QTV, obj->QT, V);
+            matrix_copy(V, obj->QTV);
     		
     	}
+
+        matrix_had(obj->D, obj->A, obj->I);
+        matrix_real(D, obj->D);
+
+        matrix_copy(obj->QTV, V);
+        matrix_conj(V, obj->QTV);
 
     	return 0;
 

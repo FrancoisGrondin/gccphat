@@ -206,6 +206,66 @@
 
     }
 
+    int matrix_getDiag(const matrix_obj * obj, vector_obj * vtr) {
+
+        unsigned int nRows;
+        unsigned int nCols;
+        unsigned int nElements;
+        unsigned int iRow;
+        unsigned int iCol;
+        unsigned int iElement;
+
+        if (obj->nRows != obj->nCols) { return -1; }
+        if (obj->nRows != vtr->nElements) { return -1; }
+
+        nElements = vtr->nElements;
+        nRows = obj->nRows;
+        nCols = obj->nCols;
+
+        for (iRow = 0; iRow < nRows; iRow++) {
+
+            iCol = iRow;
+            iElement = iRow;
+
+            vtr->real[iElement] = obj->real[iRow * nCols + iCol];
+            vtr->imag[iElement] = obj->imag[iRow * nCols + iCol];
+
+        }
+
+        return 0;
+
+    }
+
+    int matrix_setDiag(matrix_obj * obj, const vector_obj * vtr) {
+
+        unsigned int nRows;
+        unsigned int nCols;
+        unsigned int nElements;
+        unsigned int iRow;
+        unsigned int iCol;
+        unsigned int iElement;
+
+        if (obj->nRows != obj->nCols) { return -1; }
+        if (obj->nRows != vtr->nElements) { return -1; }
+
+        nElements = vtr->nElements;
+        nRows = obj->nRows;
+        nCols = obj->nCols;
+
+        for (iRow = 0; iRow < nRows; iRow++) {
+
+            iCol = iRow;
+            iElement = iRow;
+
+            obj->real[iRow * nCols + iCol] = vtr->real[iElement];
+            obj->imag[iRow * nCols + iCol] = vtr->imag[iElement];
+
+        }
+
+        return 0;
+
+    }
+
     int matrix_zero(matrix_obj * obj) {
 
         memset(obj->real, 0x00, sizeof(float) * obj->nRows * obj->nCols);
@@ -222,6 +282,9 @@
         
         if (obj->nRows >= obj->nCols) { nElements = obj->nCols; }
         else { nElements = obj->nRows; }
+
+        memset(obj->real, 0x00, sizeof(float) * obj->nRows * obj->nCols);
+        memset(obj->imag, 0x00, sizeof(float) * obj->nRows * obj->nCols);
 
         for (iElement = 0; iElement < nElements; iElement++) {
 
@@ -347,6 +410,48 @@
 
     }
 
+    int matrix_had(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2) {
+
+        unsigned int iRow;
+        unsigned int iCol;
+        unsigned int nRows;
+        unsigned int nCols;
+
+        float src1R, src1I;
+        float src2R, src2I;
+        float destR, destI; 
+
+        if (dest->nRows != src1->nRows) { return -1; }
+        if (dest->nRows != src2->nRows) { return -1; }
+        if (dest->nCols != src1->nCols) { return -1; }
+        if (dest->nCols != src2->nCols) { return -1; }
+
+        nRows = dest->nRows;
+        nCols = dest->nCols;
+
+        for (iRow = 0; iRow < nRows; iRow++) {
+
+            for (iCol = 0; iCol < nCols; iCol++) {
+
+                src1R = src1->real[iRow * nCols + iCol];
+                src1I = src1->imag[iRow * nCols + iCol];
+                src2R = src2->real[iRow * nCols + iCol];
+                src2I = src2->imag[iRow * nCols + iCol];
+
+                destR = src1R * src2R - src1I * src2I;
+                destI = src1R * src2I + src1I * src2R;
+
+                dest->real[iRow * nCols + iCol] = destR;
+                dest->imag[iRow * nCols + iCol] = destI;
+
+            }
+
+        }
+
+        return 0;
+
+    }
+
     int matrix_conj(matrix_obj * dest, const matrix_obj * src) {
 
         unsigned int iRowSrc, iColSrc;
@@ -408,6 +513,30 @@
             }
 
         }
+
+        return 0;
+
+    }
+
+    int matrix_real(matrix_obj * dest, const matrix_obj * src) {
+
+        if (dest->nRows != src->nRows) { return -1; }
+        if (dest->nCols != src->nCols) { return -1; }
+
+        memcpy(dest->real, src->real, sizeof(float) * src->nRows * src->nCols);
+        memset(dest->imag, 0x00, sizeof(float) * src->nRows * src->nCols);
+
+        return 0;
+
+    }
+
+    int matrix_imag(matrix_obj * dest, const matrix_obj * src) {
+
+        if (dest->nRows != src->nRows) { return -1; }
+        if (dest->nCols != src->nCols) { return -1; }
+
+        memset(dest->real, 0x00, sizeof(float) * src->nRows * src->nCols);
+        memcpy(dest->imag, src->imag, sizeof(float) * src->nRows * src->nCols);
 
         return 0;
 
@@ -522,7 +651,7 @@
 
     }
 
-    void matrix_printf(matrix_obj * obj) {
+    void matrix_printf(const matrix_obj * obj) {
 
         unsigned int iRow, iCol;
         float objR, objI;

@@ -97,29 +97,17 @@
 
         matrix_copy(obj->As[0], A);
 
-        printf("A0 = \n");
-        matrix_printf(obj->As[0]);
-
         for (t = 0; t < T; t++) {
 
             householder_process(obj->householders[t], obj->As[t], obj->Qs[t]);
 
-            printf("Qs[%u] = \n", t);
-            matrix_printf(obj->Qs[t]);
-
             matrix_setSubMatrix(obj->Qps[t], t, t, obj->Qs[t]);
 
             matrix_mul(obj->Aps[t], obj->Qs[t], obj->As[t]);
-            printf("As[%u] = \n", t);
-            matrix_printf(obj->Aps[t]);
 
             if ((t+1) < T) {
 
                 matrix_getSubMatrix(obj->Aps[t], 1, 1, obj->As[t+1]);
-
-            printf("As_sub = \n");
-            matrix_printf(obj->As[t+1]);
-
 
             }
 
@@ -129,29 +117,16 @@
         matrix_identity(Q);
         matrix_copy(R, A);
 
-            printf("Q = \n");
-            matrix_printf(Q);
-
-
         for (t = 0; t < T; t++) {
 
-            printf("Qps[%u] = \n",t);
-            matrix_printf(obj->Qps[t]);
-
             matrix_conj(obj->QT, obj->Qps[t]);
-            printf("QT = \n");
-            matrix_printf(obj->QT);
             matrix_mul(obj->Qp, Q, obj->QT);
             matrix_copy(Q, obj->Qp);
-            printf("Q = \n");
-            matrix_printf(Q);
 
             matrix_mul(obj->Rp, obj->Qps[t], R);
             matrix_copy(R, obj->Rp);
 
         }
-
-
 
         return 0;
 

@@ -15,6 +15,10 @@
         matrix_obj * QT;
         matrix_obj * A;
         matrix_obj * QTA;
+        matrix_obj * QTV;
+
+        matrix_obj * I;
+        matrix_obj * D;
 
         qr_obj * qr;
 

@@ -61,27 +61,39 @@
         if (Q->nRows != obj->M) { return -1; }
         if (Q->nCols != obj->M) { return -1; }
 
-        matrix_getCol(A, 0, obj->x);
-        vector_norm(&Xnorm, obj->x);
+        if (obj->M > 1) {
 
-        vector_get(obj->x, 0, &x1);
-        alpha = scalar_setPhasor(Xnorm, scalar_getPhase(x1));
+            matrix_getCol(A, 0, obj->x);
+            vector_norm(&Xnorm, obj->x);
 
-        vector_scale(obj->alpha_e1, obj->e1, &alpha);
+            vector_get(obj->x, 0, &x1);
+            alpha = scalar_setPhasor(Xnorm, scalar_getPhase(x1));
 
-        vector_sub(obj->u, obj->x, obj->alpha_e1);
+            vector_scale(obj->alpha_e1, obj->e1, &alpha);
 
-        vector_normalize(obj->v, obj->u);
+            vector_sub(obj->u, obj->x, obj->alpha_e1);
 
-        two.real = 2.0f;
-        two.imag = 0.0f;
-        
-        matrix_setCol(obj->V, 0, obj->v);
-        matrix_conj(obj->VH, obj->V);
-        matrix_mul(obj->VVH, obj->V, obj->VH);
-        matrix_scale(obj->twoVVH, obj->VVH, &two);
+            vector_normalize(obj->v, obj->u);
 
-        matrix_sub(Q, obj->I, obj->twoVVH);
+            two.real = 2.0f;
+            two.imag = 0.0f;
+            
+            matrix_setCol(obj->V, 0, obj->v);
+            matrix_conj(obj->VH, obj->V);
+            matrix_mul(obj->VVH, obj->V, obj->VH);
+            matrix_scale(obj->twoVVH, obj->VVH, &two);
+
+            matrix_sub(Q, obj->I, obj->twoVVH);
+
+        }
+        else {
+
+            q.real = 1.0f;
+            q.imag = 0.0f;
+
+            matrix_setElement(Q, 0, 0, &q);
+
+        }
 
         return 0;
 

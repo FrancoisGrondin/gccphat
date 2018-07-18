@@ -27,8 +27,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include <gccphat/utils/vector.h>
-    
+        
     typedef struct matrix_obj {
 
         float * real;
@@ -43,59 +42,6 @@
 
     void matrix_destroy(matrix_obj * obj);   
 
-
-    int matrix_copy(matrix_obj * dest, const matrix_obj * src);
-
-
-    int matrix_getElement(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, scalar_struct * scalar);
-
-    int matrix_setElement(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const scalar_struct * scalar);
-
-    int matrix_getRow(const matrix_obj * obj, const unsigned int iRow, vector_obj * vtr);
-
-    int matrix_setRow(matrix_obj * obj, const unsigned int iRow, const vector_obj * vtr);
-
-    int matrix_getCol(const matrix_obj * obj, const unsigned int iCol, vector_obj * vtr);
-
-    int matrix_setCol(matrix_obj * obj, const unsigned int iCol, const vector_obj * vtr);
-
-    int matrix_getSubMatrix(const matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, matrix_obj * sub);
-
-    int matrix_setSubMatrix(matrix_obj * obj, const unsigned int iRow, const unsigned int iCol, const matrix_obj * sub);
-
-    int matrix_getDiag(const matrix_obj * obj, vector_obj * vtr);
-
-    int matrix_setDiag(matrix_obj * obj, const vector_obj * vtr);
-
-
-    int matrix_zero(matrix_obj * obj);
-
-    int matrix_identity(matrix_obj * obj);
-
-
-    int matrix_add(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
-
-    int matrix_sub(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
-
-    int matrix_mul(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
-
-    int matrix_had(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
-
-    int matrix_conj(matrix_obj * dest, const matrix_obj * src);
-
-
-    int matrix_scale(matrix_obj * dest, const matrix_obj * src, const scalar_struct * scalar);
-
-    int matrix_real(matrix_obj * dest, const matrix_obj * src);
-
-    int matrix_imag(matrix_obj * dest, const matrix_obj * src);
-
-
-    int matrix_norm(const matrix_obj * obj, const unsigned int p, float * norm);
-
-    int matrix_symm(const matrix_obj * obj, char * symm);
-
-    int matrix_tril(const matrix_obj * obj, char * tril);
 
 
     void matrix_printf(const matrix_obj * obj);

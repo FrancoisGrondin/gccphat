@@ -2,31 +2,10 @@
 #define __GCCPHAT_UTILS_SVD
 
     #include <stdlib.h>
-	#include <gccphat/utils/eig.h>
-    #include <gccphat/utils/matrix.h>	
+	#include <gccphat/utils/matrix.h>
 
 	typedef struct svd_obj {
 
-		unsigned int M;
-		unsigned int N;
-
-		matrix_obj * A;
-		matrix_obj * AT;
-
-		matrix_obj * ATA;
-		matrix_obj * AAT;
-
-		matrix_obj * D1;
-		matrix_obj * V1;
-		matrix_obj * D2;
-		matrix_obj * V2;
-
-		matrix_obj * U;
-		matrix_obj * S;
-		matrix_obj * V;
-
-		eig_obj * eigM;
-		eig_obj * eigN;
 
 	} svd_obj;
 

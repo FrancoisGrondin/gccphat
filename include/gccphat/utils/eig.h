@@ -4,6 +4,7 @@
     #include <stdlib.h>
     #include <gccphat/utils/matrix.h>
     #include <gccphat/utils/qr.h>
+    #include <gccphat/utils/vector.h>
 
     typedef struct eig_obj {
 
@@ -19,8 +20,14 @@
 
         matrix_obj * I;
         matrix_obj * D;
+        matrix_obj * V;
+
+        vector_obj * v;
 
         qr_obj * qr;
+
+        float * lambdas;
+        unsigned int * indexes;
 
     } eig_obj;
 

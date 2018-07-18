@@ -8,6 +8,7 @@ extern "C" {
     #include <utils/matrix.h>
     #include <utils/qr.h>
     #include <utils/scalar.h>
+    #include <utils/svd.h>
     #include <utils/vector.h>
 
 #ifdef __cplusplus

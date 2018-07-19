@@ -9,8 +9,8 @@
 
         obj->M = M;
         obj->N = N;
-        obj->array = (float *) malloc(sizeof(float) * M * N * 2);
-        memset(obj->array, 0x00, sizeof(float) * M * N * 2);
+        obj->array = (float *) malloc(sizeof(float) * M * N);
+        memset(obj->array, 0x00, sizeof(float) * M * N);
 
         return obj;
 
@@ -23,27 +23,15 @@
 
     }
 
-    float matrix_getR(const matrix_obj * obj, const unsigned int m, const unsigned int n) {
+    float matrix_get(const matrix_obj * obj, const unsigned int m, const unsigned int n) {
 
-        return obj->array[(m * obj->N + n) * 2 + 0];
-
-    }
-
-    float matrix_getI(const matrix_obj * obj, const unsigned int m, const unsigned int n) {
-
-        return obj->array[(m * obj->N + n) * 2 + 1];
+        return obj->array[m * obj->N + n];
 
     }
 
-    void matrix_setR(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float real) {
+    void matrix_set(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float value) {
 
-        obj->array[(m * obj->N + n) * 2 + 0] = real;
-
-    }
-
-    void matrix_setI(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float imag) {
-
-        obj->array[(m * obj->N + n) * 2 + 1] = imag;
+        obj->array[m * obj->N + n] = value;
 
     }
 
@@ -52,7 +40,30 @@
         if (dest->M != src->M) { return; }
         if (dest->N != src->N) { return; }
 
-        memcpy(dest->array, src->array, sizeof(float) * src->M * src->N * 2);
+        memcpy(dest->array, src->array, sizeof(float) * src->M * src->N);
+
+    }
+
+    void matrix_eye(matrix_obj * obj) {
+
+        unsigned int T;
+        unsigned int t;
+
+        if (obj->M > obj->N) { T = obj->N; } else { T = obj->M; }
+
+        memset(obj->array, 0x00, sizeof(float) * obj->M * obj->N);
+
+        for (t = 0; t < T; t++) {
+
+            obj->array[t * obj->M + t] = 1.0f;
+
+        }
+
+    }
+
+    void matrix_zero(matrix_obj * obj) {
+
+        memset(obj->array, 0x00, sizeof(float) * obj->M * obj->N);
 
     }
 
@@ -66,7 +77,7 @@
 
             for (n = 0; n < obj->N; n++) {
 
-                printf("( %+1.3f, %+1.3fj ) ", obj->array[(m * obj->N + n) * 2 + 0], obj->array[(m * obj->N + n) * 2 + 1]);
+                printf("%+1.3f ", obj->array[m * obj->N + n]);
 
             }
 

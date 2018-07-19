@@ -30,19 +30,25 @@
         
     typedef struct matrix_obj {
 
-        float * real;
-        float * imag;
-        unsigned int nRows;
-        unsigned int nCols;
+        float * array;
+        unsigned int M;
+        unsigned int N;
 
     } matrix_obj;
 
-
-    matrix_obj * matrix_construct(const unsigned int nRows, const unsigned int nCols);
+    matrix_obj * matrix_construct(const unsigned int M, const unsigned int N);
 
     void matrix_destroy(matrix_obj * obj);   
 
+    float matrix_getR(const matrix_obj * obj, const unsigned int m, const unsigned int n);
 
+    float matrix_getI(const matrix_obj * obj, const unsigned int m, const unsigned int n);
+
+    void matrix_setR(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float real);
+
+    void matrix_setI(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float imag);
+
+    void matrix_copy(matrix_obj * dest, const matrix_obj * src);
 
     void matrix_printf(const matrix_obj * obj);
 

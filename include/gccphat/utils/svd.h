@@ -6,10 +6,9 @@
 
 	typedef struct svd_obj {
 
-
 	} svd_obj;
 
-	svd_obj * svd_construct(const unsigned int M, const unsigned int N);
+	svd_obj * svd_construct(void);
 
 	void svd_destroy(svd_obj * obj);
 

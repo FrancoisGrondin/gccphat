@@ -1,5 +1,5 @@
 
-    #include <gccphat/utils/svd.h>
+    #include <gccphat_svd/utils/svd.h>
 
     svd_obj * svd_construct(void) {
 

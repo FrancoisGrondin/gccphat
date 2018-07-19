@@ -1,5 +1,5 @@
 
-    #include <gccphat/utils/matrix.h>
+    #include <gccphat_svd/utils/matrix.h>
 
     matrix_obj * matrix_construct(const unsigned int M, const unsigned int N) {
 
@@ -41,6 +41,25 @@
         if (dest->N != src->N) { return; }
 
         memcpy(dest->array, src->array, sizeof(float) * src->M * src->N);
+
+    }
+
+    void matrix_transpose(matrix_obj * dest, const matrix_obj * src) {
+
+        unsigned int m, n;
+
+        if (dest->M != src->N) { return; }
+        if (dest->N != src->M) { return; }
+
+        for (m = 0; m < dest->M; m++) {
+
+            for (n = 0; n < dest->N; n++) {
+
+                dest->array[m * dest->N + n] = src->array[n * src->N + m];
+
+            }
+
+        }
 
     }
 

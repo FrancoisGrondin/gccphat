@@ -1,5 +1,5 @@
-#ifndef __GCCPHAT_UTILS_MATRIX
-#define __GCCPHAT_UTILS_MATRIX
+#ifndef __GCCPHATSVD_UTILS_MATRIX
+#define __GCCPHATSVD_UTILS_MATRIX
 
    /**
     * \file         matrix.h
@@ -45,6 +45,8 @@
     void matrix_set(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float value);
 
     void matrix_copy(matrix_obj * dest, const matrix_obj * src);
+
+    void matrix_transpose(matrix_obj * dest, const matrix_obj * src);
 
     void matrix_eye(matrix_obj * obj);
 

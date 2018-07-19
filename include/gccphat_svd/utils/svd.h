@@ -1,8 +1,8 @@
-#ifndef __GCCPHAT_UTILS_SVD
-#define __GCCPHAT_UTILS_SVD
+#ifndef __GCCPHATSVD_UTILS_SVD
+#define __GCCPHATSVD_UTILS_SVD
 
     #include <stdlib.h>
-	#include <gccphat/utils/matrix.h>
+	#include "matrix.h"
 
 	typedef struct svd_obj {
 

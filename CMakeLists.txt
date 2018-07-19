@@ -15,23 +15,41 @@ set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/lib")
 
 #Add base directory for includes (global)
-include_directories(include/gccphat)
+include_directories(include/gccphat_fft)
+include_directories(include/gccphat_mm)
+include_directories(include/gccphat_svd)
 
-add_subdirectory(include)
+#add_subdirectory(include)
 
-set(SRC
-
-    src/utils/fft.c
-    src/utils/matrix.c
-    src/utils/svd.c
-
+set(SRC_FFT
+	src/gccphat_fft/utils/gpfft.c
+)
+set(SRC_MM
+	src/gccphat_mm/utils/gpmm.c
+)
+set(SRC_SVD
+	src/gccphat_svd/utils/gpsvd.c
+	src/gccphat_svd/utils/matrix.c
+	src/gccphat_svd/utils/svd.c
 )
 
-add_library(gccphat SHARED
-	${SRC}
+add_library(gccphat_fft SHARED
+	${SRC_FFT}
+)
+add_library(gccphat_mm SHARED
+	${SRC_MM}
+)
+add_library(gccphat_svd SHARED
+	${SRC_SVD}
 )
 
-target_link_libraries(gccphat
+target_link_libraries(gccphat_fft
+	m
+)
+target_link_libraries(gccphat_mm
+	m
+)
+target_link_libraries(gccphat_svd
 	m
 )
 
@@ -39,7 +57,11 @@ add_executable(demo
     demo/main.c
 )
 target_link_libraries(demo
-    gccphat
+    gccphat_fft
+    gccphat_mm
+    gccphat_svd
 )
 
-install(TARGETS gccphat DESTINATION lib)
+install(TARGETS gccphat_fft DESTINATION lib)
+install(TARGETS gccphat_mm DESTINATION lib)
+install(TARGETS gccphat_svd DESTINATION lib)

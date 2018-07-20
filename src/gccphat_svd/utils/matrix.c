@@ -86,6 +86,115 @@
 
     }
 
+    void matrix_add(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2) {
+
+        unsigned int m, n;
+        unsigned int M, N;
+
+        if (dest->M != src1->M) { return; }
+        if (dest->N != src1->N) { return; }
+        if (dest->M != src2->M) { return; }
+        if (dest->N != src2->N) { return; }
+
+        M = dest->M;
+        N = dest->N;
+
+        for (m = 0; m < M; m++) {
+
+            for (n = 0; n < N; n++) {
+
+                dest->array[m * N + n] = src1->array[m * N + n] + src2->array[m * N + n];
+
+            }
+
+        }
+
+    }
+
+    void matrix_sub(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2) {
+
+        unsigned int m, n;
+        unsigned int M, N;
+
+        if (dest->M != src1->M) { return; }
+        if (dest->N != src1->N) { return; }
+        if (dest->M != src2->M) { return; }
+        if (dest->N != src2->N) { return; }
+
+        M = dest->M;
+        N = dest->N;
+
+        for (m = 0; m < M; m++) {
+
+            for (n = 0; n < N; n++) {
+
+                dest->array[m * N + n] = src1->array[m * N + n] - src2->array[m * N + n];
+
+            }
+
+        }
+
+    }
+
+    void matrix_mul(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2) {
+
+        unsigned int m, n, k;
+        unsigned int M, N, K;
+        float total;
+
+        if (dest->M != src1->M) { return; }
+        if (dest->N != src2->N) { return; }
+        if (src1->N != src2->M) { return; }
+
+        M = dest->M;
+        N = dest->N;
+        K = src1->N;
+
+        for (m = 0; m < M; m++) {
+
+            for (n = 0; n < N; n++) {
+
+                total = 0.0f;
+
+                for (k = 0; k < K; k++) {
+
+                    total += src1->array[m * K + k] * src2->array[k * N + n];
+
+                }
+
+                dest->array[m * N + n] = total;
+
+            }
+
+        }
+
+    }
+
+    void matrix_had(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2) {
+
+        unsigned int m, n;
+        unsigned int M, N;
+
+        if (dest->M != src1->M) { return; }
+        if (dest->N != src1->N) { return; }
+        if (dest->M != src2->M) { return; }
+        if (dest->N != src2->N) { return; }
+
+        M = dest->M;
+        N = dest->N;
+
+        for (m = 0; m < M; m++) {
+
+            for (n = 0; n < N; n++) {
+
+                dest->array[m * N + n] = src1->array[m * N + n] * src2->array[m * N + n];
+
+            }
+
+        }
+
+    }
+
     void matrix_printf(const matrix_obj * obj) {
 
         unsigned int m, n;

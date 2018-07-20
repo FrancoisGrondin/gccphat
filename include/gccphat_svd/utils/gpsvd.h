@@ -14,16 +14,21 @@
         
         unsigned int K;
         unsigned int Q;
-        unsigned int R;
-        
-        matrix_obj * thetas;
-        matrix_obj * tdoas;
+                
+        float * thetas;
+        float * tdoas;
 
-        matrix_obj * Ureal;
-        matrix_obj * SVTreal;
+        unsigned int R_real;
+        unsigned int R_imag;
 
-        matrix_obj * Uimag;
-        matrix_obj * SVTimag;
+        float * U_real;
+        float * T_real;
+
+        float * U_imag;
+        float * T_imag;
+
+        float * TX_real;
+        float * TX_imag;
 
     } gpsvd_obj;
 

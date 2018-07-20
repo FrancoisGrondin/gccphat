@@ -40,9 +40,11 @@
 
     void matrix_destroy(matrix_obj * obj);   
 
+
     float matrix_get(const matrix_obj * obj, const unsigned int m, const unsigned int n);
 
     void matrix_set(const matrix_obj * obj, const unsigned int m, const unsigned int n, const float value);
+
 
     void matrix_copy(matrix_obj * dest, const matrix_obj * src);
 
@@ -51,6 +53,16 @@
     void matrix_eye(matrix_obj * obj);
 
     void matrix_zero(matrix_obj * obj);
+
+
+    void matrix_add(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
+
+    void matrix_sub(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
+
+    void matrix_mul(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
+
+    void matrix_had(matrix_obj * dest, const matrix_obj * src1, const matrix_obj * src2);
+
 
     void matrix_printf(const matrix_obj * obj);
 

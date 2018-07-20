@@ -15,6 +15,8 @@
 
 		gpsvd = gpsvd_construct(N, fS, c, d, Q);
 
+
+
 		gpsvd_destroy(gpsvd);
 
 		return 0;

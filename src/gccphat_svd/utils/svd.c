@@ -77,7 +77,7 @@
 
                     }
 
-                    zeta = (beta-alpha) / (2.0f * gamma);
+                    zeta = (beta-alpha) / (2.0f * gamma + 1E-20f);
 
                     if (zeta > 0.0f) { zeta_sign = 1.0f; }
                     if (zeta == 0.0f) { zeta_sign = 0.0f; }
@@ -118,7 +118,7 @@
 
                     }
 
-                    cost = fabsf(gamma) / sqrtf(alpha * beta); 
+                    cost = fabsf(gamma) / sqrtf(alpha * beta + 1E-20f); 
 
                     if (cost > costMax) {
                         costMax = cost;

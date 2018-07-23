@@ -53,10 +53,17 @@ target_link_libraries(gccphat_svd
 	m
 )
 
-add_executable(demo
-    demo/main.c
+add_executable(simulate
+	demo/simulate.c
 )
-target_link_libraries(demo
+target_link_libraries(simulate
+	m
+)
+
+add_executable(gccphat
+    demo/gccphat.c
+)
+target_link_libraries(gccphat
     gccphat_fft
     gccphat_mm
     gccphat_svd

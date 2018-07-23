@@ -198,13 +198,13 @@
 
             for (r = 0; r < R_real; r++) {
                 for (k = 0; k < K; k++) {
-                    obj->T_real[r * K + k] = matrix_get(S_real, k, k) * matrix_get(V_real, r, k);
+                    obj->T_real[r * K + k] = matrix_get(S_real, r, r) * matrix_get(V_real, k, r);
                 }
             }
 
             for (r = 0; r < R_imag; r++) {
                 for (k = 0; k < K; k++) {
-                    obj->T_imag[r * K + k] = matrix_get(S_imag, k, k) * matrix_get(V_imag, r, k);
+                    obj->T_imag[r * K + k] = matrix_get(S_imag, r, r) * matrix_get(V_imag, k, r);
                 }
             }
 
@@ -305,7 +305,7 @@
             total_imag = 0.0f;
 
             for (k = 0; k < K; k++) {
-                total_imag += obj->T_imag[r_imag *K + k] * X[k*2+1];
+                total_imag += obj->T_imag[r_imag * K + k] * X[k*2+1];
             }
 
             obj->TX_imag[r_imag] = total_imag;

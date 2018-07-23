@@ -1,6 +1,5 @@
     
     #include <gccphat_mm/utils/gpmm.h>
-#include <stdio.h>
     
     gpmm_obj * gpmm_construct(const unsigned int N, const unsigned int fS, const float c, const float d, const unsigned int Q) {
 

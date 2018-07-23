@@ -1,6 +1,7 @@
 
     #include <gccphat_svd.h>
     #include <gccphat_mm.h>
+    #include <gccphat_fft.h>
 
     #include <getopt.h>
     #include <stdlib.h>
@@ -14,6 +15,7 @@
         printf("c    Speed of sound (m/sec)\n");
         printf("d    Distance between microphones (m)\n");
         printf("h    Display help\n");
+        printf("i    Interpolation rate\n");
         printf("m    Method to compute GCC-PHAT ('f', for fft, m' for multiplication, 's' for svd)\n");
         printf("N    Frame size (sample)\n");
         printf("Q    Number of discrete angle on the arc from -pi/2 to +pi/2\n");
@@ -50,6 +52,7 @@
         unsigned int N, r, Q;
         float c, d;
         char m;
+        unsigned int i;
 
         unsigned int K;
         unsigned int q, k;
@@ -58,6 +61,7 @@
 
         gpsvd_obj * gpsvd;
         gpmm_obj * gpmm;
+        gpfft_obj * gpfft;
 
         float * X;
         float * x;
@@ -72,6 +76,7 @@
 
         c = NAN;
         d = NAN;
+        i = 1;
         l = 0;
         m = 0x00;
         N = 0;
@@ -79,13 +84,14 @@
         Q = 0;
         r = 0;
 
-        while ((option = getopt(argc, argv, "c:d:hlm:N:oQ:r:")) != -1) {
+        while ((option = getopt(argc, argv, "c:d:hi:lm:N:oQ:r:")) != -1) {
 
             switch (option) {
 
                 case 'c': c = atof(optarg); break;
                 case 'd': d = atof(optarg); break;
                 case 'h': help(); exit(EXIT_SUCCESS); break;
+                case 'i': i = atoi(optarg); break;
                 case 'l': l = 1; break;
                 case 'm': m = optarg[0]; break;
                 case 'N': N = atoi(optarg); break;
@@ -106,14 +112,41 @@
 
         K = N/2 + 1;
 
-        Wreal = (float *) malloc(sizeof(float) * Q * K);
-        Wimag = (float *) malloc(sizeof(float) * Q * K);
-
         switch (m) {
 
             case 'f':
 
-                // To be done
+                X = (float *) malloc(sizeof(float) * K * 2);
+                x = (float *) malloc(sizeof(float) * Q);
+
+                gpfft = gpfft_construct(N, r, c, d, Q, i);
+
+                time_taken = 0.0f;
+
+                while (fread(X, sizeof(float), 2*K, stdin) == (2*K)) {
+
+                    t = clock();
+
+                    gpfft_process(gpfft, X, x);
+
+                    qMax = findMax(x, Q);
+                    theta = gpfft->thetas[qMax];
+
+                    if (o == 1)
+                        fprintf(stdout, "%1.6f\n", theta);
+
+                    t = clock() - t;
+                    time_taken += ((double)t)/CLOCKS_PER_SEC;
+
+                }
+
+                if (l == 1)
+                    fprintf(stdout, "Time taken: %f\n", time_taken);                
+
+                gpfft_destroy(gpfft);
+                
+                free((void *) X);
+                free((void *) x);                
 
             break;
 

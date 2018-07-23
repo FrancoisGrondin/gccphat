@@ -6,6 +6,7 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 find_package(PkgConfig REQUIRED)
+pkg_check_modules(PC_FFTW3 REQUIRED fftw3f)
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
@@ -44,6 +45,7 @@ add_library(gccphat_svd SHARED
 )
 
 target_link_libraries(gccphat_fft
+	${PC_FFTW3_LIBRARIES}
 	m
 )
 target_link_libraries(gccphat_mm

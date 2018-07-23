@@ -1,5 +1,5 @@
-#ifndef __GCCPHATSVD_UTILS_GPMM
-#define __GCCPHATSVD_UTILS_GPMM
+#ifndef __GCCPHATMM_UTILS_GPMM
+#define __GCCPHATMM_UTILS_GPMM
 
     #include <math.h>
     #include <stdlib.h>

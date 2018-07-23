@@ -134,7 +134,8 @@
 
         for (n = 0; n < N; n++) {
 
-            singular = 0.0f;
+            // Set very small initial value to avoid division by zero
+            singular = 1E-20f;
 
             for (m = 0; m < M; m++) {
 

@@ -1,5 +1,6 @@
     
     #include <gccphat_mm/utils/gpmm.h>
+#include <stdio.h>
     
     gpmm_obj * gpmm_construct(const unsigned int N, const unsigned int fS, const float c, const float d, const unsigned int Q) {
 
@@ -51,8 +52,8 @@
 
                 if ((k == 0) || (k == N/2)) { g = 1; } else { g = 2; }
 
-                w_real = sqrtf(g/((float) N)) * cosf(M_2_PI * ((float) k) * tdoa / ((float) N));
-                w_imag = sqrtf(g/((float) N)) * sinf(M_2_PI * ((float) k) * tdoa / ((float) N));
+                w_real = sqrtf(g/((float) N)) * cosf(2.0f * M_PI * ((float) k) * tdoa / ((float) N));
+                w_imag = sqrtf(g/((float) N)) * sinf(2.0f * M_PI * ((float) k) * tdoa / ((float) N));
 
                 obj->W_real[q * K + k] = w_real;
                 obj->W_imag[q * K + k] = w_imag;
@@ -110,6 +111,15 @@
             x[q] = total_real;
 
         }
+
+        return 0;
+
+    }
+
+    int gpmm_getMatrices(gpmm_obj * obj, float * W_real, float * W_imag) {
+
+        memcpy(W_real, obj->W_real, sizeof(float) * obj->Q * obj->K);
+        memcpy(W_imag, obj->W_imag, sizeof(float) * obj->Q * obj->K);
 
         return 0;
 

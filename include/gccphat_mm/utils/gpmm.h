@@ -29,4 +29,6 @@
 
     int gpmm_process(gpmm_obj * obj, const float * X, float * x);
 
+    int gpmm_getMatrices(gpmm_obj * obj, float * W_real, float * W_imag);
+
 #endif

@@ -38,4 +38,6 @@
 
     int gpsvd_process(gpsvd_obj * obj, const float * X, float * x);
 
+    int gpsvd_getMatrices(gpsvd_obj * obj, float * W_real, float * W_imag);   
+
 #endif

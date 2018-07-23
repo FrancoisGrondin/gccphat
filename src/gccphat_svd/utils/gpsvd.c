@@ -81,8 +81,8 @@
 
                 if ((k == 0) || (k == N/2)) { g = 1; } else { g = 2; }
 
-                w_real = sqrtf(g/((float) N)) * cosf(M_2_PI * ((float) k) * tdoa / ((float) N));
-                w_imag = sqrtf(g/((float) N)) * sinf(M_2_PI * ((float) k) * tdoa / ((float) N));
+                w_real = sqrtf(g/((float) N)) * cosf(2.0f * M_PI * ((float) k) * tdoa / ((float) N));
+                w_imag = sqrtf(g/((float) N)) * sinf(2.0f * M_PI * ((float) k) * tdoa / ((float) N));
 
                 matrix_set(W_real, q, k, w_real);
                 matrix_set(W_imag, q, k, w_imag);
@@ -141,6 +141,8 @@
 
         // Rank reduction
 
+        R_real = S_real->M;
+        
         lambda_real_total = 0.0f;
         for (m = 0; m < S_real->M; m++) {
             lambda_real_total += matrix_get(S_real, m, m);
@@ -154,6 +156,8 @@
                 break;
             }
         }
+
+        R_imag = S_imag->M;
 
         lambda_imag_total = 0.0f;
         for (m = 0; m < S_imag->M; m++) {
@@ -176,20 +180,30 @@
         obj->T_real = (float *) malloc(sizeof(float) * R_real * K);
 
         obj->U_imag = (float *) malloc(sizeof(float) * Q * R_imag);
-        obj->T_imag = (float *) malloc(sizeof(float) * R_real * K);
+        obj->T_imag = (float *) malloc(sizeof(float) * R_imag * K);
 
         if (Q >= K) {
 
             for (r = 0; r < R_real; r++) {
                 for (q = 0; q < Q; q++) {
                     obj->U_real[q * R_real + r] = matrix_get(U_real, q, r);
+                }
+            }
+
+            for (r = 0; r < R_imag; r++) {
+                for (q = 0; q < Q; q++) {
                     obj->U_imag[q * R_imag + r] = matrix_get(U_imag, q, r);
+                }
+            }
+
+            for (r = 0; r < R_real; r++) {
+                for (k = 0; k < K; k++) {
+                    obj->T_real[r * K + k] = matrix_get(S_real, k, k) * matrix_get(V_real, r, k);
                 }
             }
 
             for (r = 0; r < R_imag; r++) {
                 for (k = 0; k < K; k++) {
-                    obj->T_real[r * K + k] = matrix_get(S_real, k, k) * matrix_get(V_real, r, k);
                     obj->T_imag[r * K + k] = matrix_get(S_imag, k, k) * matrix_get(V_imag, r, k);
                 }
             }
@@ -200,16 +214,27 @@
             for (r = 0; r < R_real; r++) {
                 for (q = 0; q < Q; q++) {
                     obj->U_real[q * R_real + r] = matrix_get(V_real, q, r);
-                    obj->U_imag[q * R_imag + r] = matrix_get(V_imag, q, r);
                 }
             }
 
             for (r = 0; r < R_imag; r++) {
+                for (q = 0; q < Q; q++) {
+                    obj->U_imag[q * R_imag + r] = matrix_get(V_imag, q, r);
+                }
+            }
+
+            for (r = 0; r < R_real; r++) {
                 for (k = 0; k < K; k++) {
                     obj->T_real[r * K + k] = matrix_get(S_real, r, r) * matrix_get(U_real, k, r);
-                    obj->T_imag[r * K + k] = matrix_get(S_imag, r, r) * matrix_get(U_imag, k, r);
+                    
                 }
             }            
+
+            for (r = 0; r < R_imag; r++) {
+                for (k = 0; k < K; k++) {
+                    obj->T_imag[r * K + k] = matrix_get(S_imag, r, r) * matrix_get(U_imag, k, r);
+                }
+            }
 
         }
 
@@ -302,6 +327,57 @@
             }
 
             x[q] = total_real - total_imag;
+
+        }
+
+        return 0;
+
+    }
+
+    int gpsvd_getMatrices(gpsvd_obj * obj, float * W_real, float * W_imag) {
+
+        unsigned int Q;
+        unsigned int K;
+        unsigned int R_real;
+        unsigned int R_imag;
+
+        unsigned int q;
+        unsigned int k;
+        unsigned int r_real;
+        unsigned int r_imag;
+
+        float total_real;
+        float total_imag;
+
+        K = obj->K;
+        Q = obj->Q;
+        R_real = obj->R_real;
+        R_imag = obj->R_imag;
+
+        for (q = 0; q < Q; q++) {
+
+            for (k = 0; k < K; k++) {
+
+                total_real = 0.0f;
+
+                for (r_real = 0; r_real < R_real; r_real++) {
+
+                    total_real += obj->U_real[q * R_real + r_real] * obj->T_real[r_real * K + k];
+
+                }
+
+                total_imag = 0.0f;
+
+                for (r_imag = 0; r_imag < R_imag; r_imag++) {
+
+                    total_imag += obj->U_imag[q * R_imag + r_imag] * obj->T_imag[r_imag * K + k];
+
+                }
+
+                W_real[q * K + k] = total_real;
+                W_imag[q * K + k] = total_imag;
+
+            }
 
         }
 

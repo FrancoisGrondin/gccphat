@@ -268,9 +268,7 @@
             total_real = 0.0f;
 
             for (k = 0; k < K; k++) {
-
                 total_real += obj->T_real[r_real * K + k] * X[k*2+0];
-
             }
 
             obj->TX_real[r_real] = total_real;
@@ -282,9 +280,7 @@
             total_imag = 0.0f;
 
             for (k = 0; k < K; k++) {
-
                 total_imag += obj->T_imag[r_imag *K + k] * X[k*2+1];
-
             }
 
             obj->TX_imag[r_imag] = total_imag;
@@ -296,17 +292,13 @@
             total_real = 0.0f;
 
             for (r_real = 0; r_real < R_real; r_real++) {
-
                 total_real += obj->U_real[q * R_real + r_real] * obj->TX_real[r_real];
-
             }
 
             total_imag = 0.0f;
 
             for (r_imag = 0; r_imag < R_imag; r_imag++) {
-
                 total_imag += obj->U_imag[q * R_imag + r_imag] * obj->TX_imag[r_imag];
-
             }
 
             x[q] = total_real - total_imag;

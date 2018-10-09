@@ -151,7 +151,7 @@
         lambda_real_cumul = 0.0f;
         for (m = 0; m < S_real->M; m++) {
             lambda_real_cumul += matrix_get(S_real, m, m) * matrix_get(S_real, m, m);
-            if (lambda_real_cumul > (1.0f - epsilon) * lambda_real_total) {
+            if (lambda_real_cumul >= (1.0f - epsilon) * lambda_real_total) {
                 R_real = (m+1);
                 break;
             }
@@ -167,7 +167,7 @@
         lambda_imag_cumul = 0.0f;
         for (m = 0; m < S_imag->M; m++) {
             lambda_imag_cumul += matrix_get(S_imag, m, m) * matrix_get(S_imag, m, m);
-            if (lambda_imag_cumul > (1.0f - epsilon) * lambda_imag_total) {
+            if (lambda_imag_cumul >= (1.0f - epsilon) * lambda_imag_total) {
                 R_imag = (m+1);
                 break;
             }

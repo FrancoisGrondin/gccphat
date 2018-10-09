@@ -141,7 +141,7 @@
                 }
 
                 if (l == 1)
-                    fprintf(stdout, "Time taken: %f\n", time_taken);                
+                    fprintf(stdout, "%1.6f\n", time_taken);                
 
                 gpfft_destroy(gpfft);
                 
@@ -176,7 +176,7 @@
                 }
 
                 if (l == 1)
-                    fprintf(stdout, "Time taken: %f\n", time_taken);
+                    fprintf(stdout, "%1.6f\n", time_taken);
 
                 gpmm_destroy(gpmm);
 
@@ -211,7 +211,7 @@
                 }
 
                 if (l == 1)
-                    fprintf(stdout, "Time taken: %f\n", time_taken);
+                    fprintf(stdout, "%1.6f\n", time_taken);
 
                 gpsvd_destroy(gpsvd);
 

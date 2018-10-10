@@ -16,8 +16,10 @@
         printf("d    Distance between microphones (m)\n");
         printf("h    Display help\n");
         printf("i    Interpolation rate\n");
+        printf("l    Log execution time\n");
         printf("m    Method to compute GCC-PHAT ('f', for fft, m' for multiplication, 's' for svd)\n");
         printf("N    Frame size (sample)\n");
+        printf("o    Output results\n");
         printf("Q    Number of discrete angle on the arc from -pi/2 to +pi/2\n");
         printf("r    Sample rate (sample/sec)­\n");
 

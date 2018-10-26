@@ -17,7 +17,7 @@
         printf("h    Display help\n");
         printf("i    Interpolation rate\n");
         printf("l    Log execution time\n");
-        printf("m    Method to compute GCC-PHAT ('f', for fft, m' for multiplication, 's' for svd)\n");
+        printf("m    Method to compute GCC-PHAT ('f' for fft, 'q' for fft with quad. interp., 'm' for multiplication, 's' for svd)\n");
         printf("N    Frame size (sample)\n");
         printf("o    Output results\n");
         printf("Q    Number of discrete angle on the arc from -pi/2 to +pi/2\n");
@@ -60,10 +60,12 @@
         unsigned int q, k;
         unsigned int qMax;
         float theta;
+        float energy;
 
         gpsvd_obj * gpsvd;
         gpmm_obj * gpmm;
         gpfft_obj * gpfft;
+        gpfftqi_obj * gpfftqi;
 
         float * X;
         float * x;
@@ -133,9 +135,10 @@
 
                     qMax = findMax(x, Q);
                     theta = gpfft->thetas[qMax];
+                    energy = x[qMax];
 
                     if (o == 1)
-                        fprintf(stdout, "%1.6f\n", theta);
+                        fprintf(stdout, "%1.6f %1.6f\n", theta, energy);
 
                     t = clock() - t;
                     time_taken += ((double)t)/CLOCKS_PER_SEC;
@@ -149,6 +152,43 @@
                 
                 free((void *) X);
                 free((void *) x);                
+
+            break;
+
+            case 'q':
+
+                X = (float *) malloc(sizeof(float) * K * 2);
+                x = (float *) malloc(sizeof(float) * Q);
+
+                gpfftqi = gpfftqi_construct(N, r, c, d, Q, i);
+
+                time_taken = 0.0f;
+
+                while (fread(X, sizeof(float), 2*K, stdin) == (2*K)) {
+
+                    t = clock();
+
+                    gpfftqi_process(gpfftqi, X, x);
+
+                    qMax = findMax(x, Q);
+                    theta = gpfftqi->thetas[qMax];
+                    energy = x[qMax];
+
+                    if (o == 1)
+                        fprintf(stdout, "%1.6f %1.6f\n", theta, energy);
+
+                    t = clock() - t;
+                    time_taken += ((double)t)/CLOCKS_PER_SEC;
+
+                }
+
+                if (l == 1)
+                    fprintf(stdout, "%1.6f\n", time_taken);                
+
+                gpfftqi_destroy(gpfftqi);
+                
+                free((void *) X);
+                free((void *) x);                      
 
             break;
 
@@ -166,11 +206,13 @@
                     t = clock();
 
                     gpmm_process(gpmm, X, x);
+
                     qMax = findMax(x, Q);
                     theta = gpmm->thetas[qMax];
+                    energy = x[qMax];
 
                     if (o == 1)
-                        fprintf(stdout, "%1.6f\n", theta);
+                        fprintf(stdout, "%1.6f %1.6f\n", theta, energy);
 
                     t = clock() - t;
                     time_taken += ((double)t)/CLOCKS_PER_SEC;
@@ -201,11 +243,13 @@
                     t = clock();
 
                     gpsvd_process(gpsvd, X, x);
+                    
                     qMax = findMax(x, Q);
                     theta = gpsvd->thetas[qMax];
+                    energy = x[qMax];
 
                     if (o == 1)
-                        fprintf(stdout, "%1.6f\n", theta);
+                        fprintf(stdout, "%1.6f %1.6f\n", theta, energy);
 
                     t = clock() - t;
                     time_taken += ((double)t)/CLOCKS_PER_SEC;

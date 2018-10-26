@@ -24,6 +24,7 @@ include_directories(include/gccphat_svd)
 
 set(SRC_FFT
 	src/gccphat_fft/utils/gpfft.c
+	src/gccphat_fft/utils/gpfftqi.c
 )
 set(SRC_MM
 	src/gccphat_mm/utils/gpmm.c
